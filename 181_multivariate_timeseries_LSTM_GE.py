@@ -52,8 +52,8 @@ df_for_training_scaled = scaler.transform(df_for_training)
 trainX = []
 trainY = []
 
-n_future = 1   # Number of days we want to look into the future based on the past days.
-n_past = 14  # Number of past days we want to use to predict the future.
+n_future = 100   # Number of days we want to look into the future based on the past days.
+n_past = 114  # Number of past days we want to use to predict the future.
 
 #Reformat input data into a shape: (n_samples x timesteps x n_features)
 #In my example, my df_for_training_scaled has a shape (12823, 5)
@@ -80,7 +80,6 @@ print('trainY shape == {}.'.format(trainY.shape))
 
 model = Sequential()
 model.add(LSTM(64, activation='relu', input_shape=(trainX.shape[1], trainX.shape[2]), return_sequences=True))
-model.add(LSTM(32, activation='relu', return_sequences=False))
 model.add(Dropout(0.2))
 model.add(Dense(trainY.shape[1]))
 
@@ -103,8 +102,8 @@ from pandas.tseries.offsets import CustomBusinessDay
 us_bd = CustomBusinessDay(calendar=USFederalHolidayCalendar())
 #Remember that we can only predict one day in future as our model needs 5 variables
 #as inputs for prediction. We only have all 5 variables until the last day in our dataset.
-n_past = 16
-n_days_for_prediction=15  #let us predict past 15 days
+n_past = 116
+n_days_for_prediction=115  #let us predict past 15 days
 
 predict_period_dates = pd.date_range(list(train_dates)[-n_past], periods=n_days_for_prediction, freq=us_bd).tolist()
 print(predict_period_dates)
